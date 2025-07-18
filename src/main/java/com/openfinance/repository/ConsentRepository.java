@@ -1,6 +1,7 @@
 package com.openfinance.repository;
 
 import com.openfinance.model.Consent;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
 public class ConsentRepository {
     private Map<String, Consent> database = new HashMap<>();
 
