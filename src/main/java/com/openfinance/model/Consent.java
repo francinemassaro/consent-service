@@ -1,10 +1,20 @@
 package com.openfinance.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "consents")
 public class Consent {
+    @Id
     private String id;
+    @Column(nullable = false)
     private String userId;
+    @Column(nullable = false)
     private boolean active;
     private LocalDateTime createdAt;
     private LocalDateTime revokedAt;

@@ -1,6 +1,7 @@
 package com.openfinance.controller;
 
 import com.openfinance.model.Consent;
+import com.openfinance.model.RevokedConsent;
 import com.openfinance.service.ConsentService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/consents")
 public class ConsentController {
+
     private final ConsentService consentService;
 
     public ConsentController(ConsentService consentService) {
@@ -40,4 +42,10 @@ public class ConsentController {
     public List<Consent> getActiveConsents() {
         return consentService.getActiveConsents();
     }
+
+    @GetMapping("/revoked")
+    public List<RevokedConsent> getRevokedConsents() {
+        return consentService.getRevokedConsents();
+    }
 }
+
