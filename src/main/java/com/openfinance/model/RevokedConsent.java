@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "consents_audit")
+@Document(collection = "revoked_consents")
 public class RevokedConsent {
     @Id
     private String id;
