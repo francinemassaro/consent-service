@@ -32,19 +32,20 @@ public class ConsentService {
 
     public void revokeConsent(String id)
     {
-        repository.findById(id).ifPresent(c -> {
-            c.setActive(false);
-            c.setRevokedAt(LocalDateTime.now());
-            repository.save(c);
+        repository.findById(id)
+                .ifPresent(c -> {
+                    c.setActive(false);
+                    c.setRevokedAt(LocalDateTime.now());
+                    repository.save(c);
 
-            RevokedConsent revoked = new RevokedConsent();
-            revoked.setId(c.getId());
-            revoked.setUserId(c.getUserId());
-            revoked.setCreatedAt(c.getCreatedAt());
-            revoked.setRevokedAt(c.getRevokedAt());
+                    RevokedConsent revoked = new RevokedConsent();
+                    revoked.setId(c.getId());
+                    revoked.setUserId(c.getUserId());
+                    revoked.setCreatedAt(c.getCreatedAt());
+                    revoked.setRevokedAt(c.getRevokedAt());
 
-            revokedConsentRepository.save(revoked);
-        });
+                    revokedConsentRepository.save(revoked);
+                });
     }
 
     public List<Consent> getActiveConsents()
@@ -52,7 +53,8 @@ public class ConsentService {
         return repository.findByActiveTrue();
     }
 
-    public List<RevokedConsent> getRevokedConsents() {
+    public List<RevokedConsent> getRevokedConsents()
+    {
         return revokedConsentRepository.findAll();
     }
 }
