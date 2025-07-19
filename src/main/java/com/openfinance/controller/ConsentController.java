@@ -2,25 +2,44 @@ package com.openfinance.controller;
 
 import com.openfinance.model.Consent;
 import com.openfinance.service.ConsentService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/consents")
 public class ConsentController {
-    private ConsentService service = new ConsentService();
 
+    private final ConsentService consentService;
+
+    public ConsentController(ConsentService consentService) {
+        this.consentService = consentService;
+    }
+
+    @GetMapping
     public List<Consent> getAllConsents() {
-        return service.getAllConsents();
+        return consentService.getAllConsents();
     }
 
-    public void createConsent(Consent consent) {
-        service.createConsent(consent);
+    @PostMapping
+    public void createConsent(@RequestBody Consent consent) {
+        consentService.createConsent(consent);
     }
 
-    public void revokeConsent(String id) {
-        service.revokeConsent(id);
+    @PatchMapping("/{id}/revoke")
+    public void revokeConsent(@PathVariable String id) {
+        consentService.revokeConsent(id);
     }
 
+    @GetMapping("/active")
     public List<Consent> getActiveConsents() {
-        return service.getActiveConsents();
+        return consentService.getActiveConsents();
     }
 }
+
