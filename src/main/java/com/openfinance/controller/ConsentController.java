@@ -24,8 +24,7 @@ public class ConsentController {
     private static final Logger log = LoggerFactory.getLogger(ConsentController.class);
     private final ConsentService consentService;
 
-    public ConsentController(ConsentService consentService)
-    {
+    public ConsentController(ConsentService consentService) {
         this.consentService = consentService;
     }
 
