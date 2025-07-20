@@ -35,7 +35,7 @@ class ConsentServiceTest {
     {
         consentRepository = mock(ConsentRepository.class);
         revokedConsentRepository = mock(RevokedConsentRepository.class);
-        consentService = new ConsentService(consentRepository, revokedConsentRepository);
+        consentService = new ConsentServiceImpl(consentRepository, revokedConsentRepository);
     }
 
     @Test
