@@ -16,6 +16,7 @@ Implementar e evoluir um microserviço para gerenciamento de consentimentos, cor
 - `createdAt` gerado automaticamente na criação
 - Logs inseridos nos pontos principais (controller e service)
 - Exceções tratadas diretamente via `ResponseStatusException` para respostas HTTP apropriadas
+- Service separada entre interface e implementação
 
 ### Integração com bancos
 - **Consent** salvo no PostgreSQL (SQL), usando Spring Data JPA
@@ -47,6 +48,7 @@ Implementar e evoluir um microserviço para gerenciamento de consentimentos, cor
 - Aplicação simples, mas com código limpo, testável e com boa separação de responsabilidades
 - Docker usado para garantir portabilidade e evitar dependência local
 - Logs ajudam na observação e rastreabilidade da aplicação
+- Service separada em interface e impl para melhor facilidade de implementação, princípio Dependency Inversion Principle
 
 ---
 
