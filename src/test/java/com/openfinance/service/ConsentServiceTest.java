@@ -10,6 +10,7 @@ import com.openfinance.repository.ConsentRepository;
 import com.openfinance.repository.RevokedConsentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -149,5 +150,25 @@ class ConsentServiceTest {
         assertEquals(1, list.size());
         assertEquals("u1", list.get(0)
                 .getUserId());
+    }
+
+    @Test
+    void testCreateConsent_invalidInstitution() {
+        CreateConsentRequest request = new CreateConsentRequest();
+        request.setUserId("user1");
+
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () ->
+                consentService.createConsent("invalidBank", request));
+        assertEquals("400 BAD_REQUEST \"Instituição inválida: invalidBank\"", ex.getMessage());
+    }
+
+    @Test
+    void testCreateConsent_blankUserId() {
+        CreateConsentRequest request = new CreateConsentRequest();
+        request.setUserId("");
+
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () ->
+                consentService.createConsent("digio", request));
+        assertEquals("400 BAD_REQUEST \"O campo 'userId' é obrigatório.\"", ex.getMessage());
     }
 }

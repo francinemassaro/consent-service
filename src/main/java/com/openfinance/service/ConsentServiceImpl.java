@@ -3,6 +3,7 @@ package com.openfinance.service;
 import com.openfinance.dto.request.CreateConsentRequest;
 import com.openfinance.dto.response.ConsentResponse;
 import com.openfinance.dto.response.RevokedConsentResponse;
+import com.openfinance.enums.Institution;
 import com.openfinance.model.Consent;
 import com.openfinance.model.RevokedConsent;
 import com.openfinance.repository.ConsentRepository;
@@ -43,6 +44,10 @@ public class ConsentServiceImpl implements ConsentService {
 
     @Override
     public ConsentResponse createConsent(String institutionId, CreateConsentRequest request) {
+        if (!Institution.isValid(institutionId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Instituição inválida: " + institutionId);
+        }
+
         if (request.getUserId() == null || request.getUserId().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo 'userId' é obrigatório.");
         }

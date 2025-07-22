@@ -13,6 +13,7 @@ Implementar e evoluir um microserviço para gerenciamento de consentimentos, cor
 - Organização dos pacotes com separação entre `model`, `dto`, `repository`, `service`, `controller` e `mapper`
 - Criação de DTOs (`request` e `response`) para evitar exposição direta das entidades
 - Criação automática de `id` no formato URN, baseado na instituição
+- Validação de instituição enviada no POST para garantir que seja válida
 - `createdAt` gerado automaticamente na criação
 - Logs inseridos nos pontos principais (controller e service)
 - Exceções tratadas diretamente via `ResponseStatusException` para respostas HTTP apropriadas

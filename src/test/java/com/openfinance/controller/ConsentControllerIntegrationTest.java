@@ -3,7 +3,6 @@ package com.openfinance.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openfinance.dto.request.CreateConsentRequest;
-import com.openfinance.model.Consent;
 import com.openfinance.repository.ConsentRepository;
 import com.openfinance.repository.RevokedConsentRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +18,11 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Tag("integration")
 @SpringBootTest
@@ -40,7 +42,8 @@ class ConsentControllerIntegrationTest {
     private ObjectMapper objectMapper;
 
     @BeforeEach
-    void setup() {
+    void setup()
+    {
         consentRepository.deleteAll();
         revokedConsentRepository.deleteAll();
     }
@@ -61,12 +64,12 @@ class ConsentControllerIntegrationTest {
         CreateConsentRequest request = new CreateConsentRequest();
         request.setUserId("usuario123");
 
-        mockMvc.perform(post("/consents/testbank")
+        mockMvc.perform(post("/consents/digio")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.userId").value("usuario123"))
-                .andExpect(jsonPath("$.id").value(containsString("urn:testbank:")));
+                .andExpect(jsonPath("$.id").value(containsString("urn:digio:")));
     }
 
     @Test
@@ -74,7 +77,7 @@ class ConsentControllerIntegrationTest {
         CreateConsentRequest request = new CreateConsentRequest();
         request.setUserId("user1");
 
-        mockMvc.perform(post("/consents/banco1")
+        mockMvc.perform(post("/consents/digio")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated());
@@ -89,7 +92,7 @@ class ConsentControllerIntegrationTest {
         CreateConsentRequest request = new CreateConsentRequest();
         request.setUserId("user2");
 
-        mockMvc.perform(post("/consents/banco2")
+        mockMvc.perform(post("/consents/digio")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated());
@@ -104,13 +107,17 @@ class ConsentControllerIntegrationTest {
         CreateConsentRequest request = new CreateConsentRequest();
         request.setUserId("user3");
 
-        String response = mockMvc.perform(post("/consents/testinst")
+        String response = mockMvc.perform(post("/consents/digio")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andReturn().getResponse().getContentAsString();
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        String id = objectMapper.readTree(response).get("id").asText();
+        String id = objectMapper.readTree(response)
+                .get("id")
+                .asText();
 
         mockMvc.perform(patch("/consents/" + id + "/revoke"))
                 .andExpect(status().isNoContent());
@@ -122,6 +129,18 @@ class ConsentControllerIntegrationTest {
         mockMvc.perform(get("/consents/revoked"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    void shouldReturn400WhenSendAnNotValidInstitution() throws Exception {
+        CreateConsentRequest request = new CreateConsentRequest();
+        request.setUserId("userX");
+
+        mockMvc.perform(post("/consents/anyBank")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Instituição inválida: anyBank"));
     }
 
     @Test
