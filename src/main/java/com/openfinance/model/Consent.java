@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "consents")
 public class Consent {
     @Id
+    @Column(unique = true, nullable = false)
     private String id;
     @Column(nullable = false)
     private String userId;

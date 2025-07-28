@@ -37,13 +37,10 @@ __________________________________________________
 POST:
 ```bash
 curl --request POST \
-  --url http://localhost:8080/consents \
+  --url http://localhost:8080/consents/digio \
   --header 'Content-Type: application/json' \
   --data '{
-    "id": "c1",
-    "userId": "u1",
-    "active": true,
-    "createdAt": "2025-07-18T20:00:00"
+    "userId": "4654654"
 }'
 ```
 
